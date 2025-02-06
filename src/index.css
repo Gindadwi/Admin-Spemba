@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.ql-container {
+  border: none !important; /* Menghilangkan border bawaan */
+  padding: 0 !important; /* Pastikan tidak ada padding tambahan */
+}
