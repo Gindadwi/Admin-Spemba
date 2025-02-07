@@ -207,7 +207,7 @@ const DetailCalonSiswa = () => {
             <div className="w-full flex justify-end">
               <button
                 type="submit"
-                className="bg-blue-500 w-48 h-12 text-white font-poppins rounded-lg hover:scale-105"
+                className="bg-BiruPekat w-48 h-12 text-white font-poppins rounded-lg hover:scale-105"
               >
                 Update Data
               </button>
