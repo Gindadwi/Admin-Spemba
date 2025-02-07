@@ -8,7 +8,7 @@ import DetailCalonSiswa from "./pages/DetailCalonSiswa";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import Login from "./pages/Login";
-import TambahImg from "./pages/slider/TambahImg";
+import TambahImg from "./pages/slider/Tambahimg";
 import EditImg from "./pages/slider/Editimg";
 import Faqs from "./pages/Faqs";
 
