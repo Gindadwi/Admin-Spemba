@@ -36,8 +36,15 @@ const DetailPendaftar = () => {
           id: key,
           ...data[key],
         }));
+
+        const sortData = dataArray.sort((a, b) => {
+          if (a.status === "Pending" && b.status !== "Pending") return -1;
+          if (a.status !== "Pending" && b.status === "Pending") return 1;
+          return 0;
+        });
+
         setPendaftaranList(dataArray);
-        setData(dataArray);
+        setData(sortData);
         setFilteredData(dataArray);
       } else {
         setPendaftaranList([]);
@@ -133,6 +140,7 @@ const DetailPendaftar = () => {
       { label: "Nama Orang Tua", key: "namaOrtu" },
       { label: "Asal Sekolah", key: "asalSekolah" },
       { label: "Nilai IPA", key: "IPA" },
+      { label: "Nilai Matematika", key: "MTK" },
       { label: "Nilai Bahasa Indonesia", key: "BIndo" },
       { label: "Rata-Rata", key: "total" },
       { label: "Kartu Keluarga (KK)", key: "kkUrl" },
