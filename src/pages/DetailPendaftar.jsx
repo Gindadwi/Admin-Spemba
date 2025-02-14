@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 import { saveAs } from "file-saver";
 import Papa from "papaparse";
 import Swal from "sweetalert2";
+import { Spinner } from "@material-tailwind/react";
 
 const DetailPendaftar = () => {
   const [data, setData] = useState([]); // Data asli dari Firebase
@@ -82,10 +83,8 @@ const DetailPendaftar = () => {
   // Loading spinner saat data sedang diambil
   if (loading) {
     return (
-      <div className="flex justify-center items-center">
-        <div className="spinner-border text-blue-500" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
+      <div className="flex justify-center items-center h-screen w-screen">
+        <Spinner color="blue" className="h-12 w-12" />
       </div>
     );
   }
@@ -143,6 +142,7 @@ const DetailPendaftar = () => {
       { label: "Nilai Matematika", key: "MTK" },
       { label: "Nilai Bahasa Indonesia", key: "BIndo" },
       { label: "Rata-Rata", key: "total" },
+      { label: "Foto 3x4", key: "pasFotoUrl" },
       { label: "Kartu Keluarga (KK)", key: "kkUrl" },
       { label: "SKHUN", key: "skhunUrl" },
       { label: "Akta Kelahiran", key: "aktaKelahiranUrl" },
@@ -164,6 +164,7 @@ const DetailPendaftar = () => {
       BIndo: item.BIndo || "0",
       MTK: item.MTK || "0",
       total: item.total || "0",
+      pasFotoUrl: item.pasFotoUrl || "Tidak tersedia",
       kkUrl: item.kkUrl || "Tidak tersedia",
       skhunUrl: item.skhunUrl || "Tidak tersedia",
       aktaKelahiranUrl: item.aktaKelahiranUrl || "Tidak tersedia",
@@ -253,8 +254,8 @@ const DetailPendaftar = () => {
           )}
         </div>
 
-        <div className="relative my-5 overflow-x-auto overflow-y-auto max-h-[450px]">
-          <table className="w-full text-sm overflow-x-auto relative lg:text-base table-auto rounded-lg">
+        <div className="relative max-w-[1020px] 2xl:w-[1440px] my-2 2xl:my-5 overflow-x-auto overflow-y-auto max-h-[450px] ">
+          <table className="w-full  text-sm overflow-x-auto relative lg:text-base table-auto rounded-lg">
             <thead className="bg-BiruPekat text-sm text-white font-poppins sticky top-0 z-10">
               <tr>
                 <th className="px-5 py-2 whitespace-nowrap font-outfit font-semibold text-left">

@@ -23,6 +23,7 @@ const DetailCalonSiswa = () => {
     nilaiMtk: "",
     status: "",
     total: "",
+    pasFotoUrl: "",
     aktaKelahiranUrl: "",
     kkUrl: "",
     kipUrl: "",
@@ -52,6 +53,7 @@ const DetailCalonSiswa = () => {
   ];
 
   const documentFields = [
+    { label: "Foto 3X4", name: "pasFotoUrl" },
     { label: "Akta Kelahiran", name: "aktaKelahiranUrl" },
     { label: "Kartu Keluarga", name: "kkUrl" },
     { label: "Kartu Indonesia Pintar", name: "kipUrl" },
@@ -81,6 +83,7 @@ const DetailCalonSiswa = () => {
             nilaiMtk: response.data.MTK || "",
             status: response.data.status || "",
             total: response.data.total || "",
+            pasFotoUrl: response.data.pasFotoUrl || "",
             aktaKelahiranUrl: response.data.aktaKelahiranUrl || "",
             kkUrl: response.data.kkUrl || "",
             kipUrl: response.data.kipUrl || "",

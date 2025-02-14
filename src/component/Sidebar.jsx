@@ -52,7 +52,7 @@ const Sidebar = () => {
 
   return (
     <div>
-      <div className="bg-BiruPekat h-screen pt-1 w-[250px]">
+      <div className="bg-BiruPekat h-screen pt-1 w-[250px] ">
         <div className="flex flex-col gap-1 p-3 justify-center items-center">
           <img src={LogoDashboard} className="w-[100px]" alt="Logo" />
           <p className="text-white font-semibold font-outfit text-center text-[18px] pb-1">
@@ -71,12 +71,12 @@ const Sidebar = () => {
                       onClick={toggleSettingSubmenu}
                       className="text-white font-outfit font-normal py-4 cursor-pointer hover:bg-BiruLow flex justify-between items-center px-6"
                     >
-                      <span className="flex gap-4 text-[16px] font-medium items-center">
+                      <span className="flex gap-4 xl:text-[16px]  font-medium items-center">
                         {menu.img && (
                           <img
                             src={menu.img}
                             alt={menu.title}
-                            className="w-[26px] h-[23px]"
+                            className="w-[26px] h-[23px] "
                           />
                         )}
                         {menu.title}
@@ -96,12 +96,12 @@ const Sidebar = () => {
                             onClick={() => navigate(sub.path)}
                             className="text-white font-outfit font-normal py-3 cursor-pointer hover:bg-BiruLow"
                           >
-                            <span className="flex gap-4 text-[14px] px-3 font-medium items-center">
+                            <span className="flex gap-4 text-[14px] 2xl:text-[16px] px-3 font-medium items-center">
                               {sub.img && (
                                 <img
                                   src={sub.img}
                                   alt={sub.title}
-                                  className="w-[20px] h-[20px]"
+                                  className="w-[20px] h-[20px] 2xl:w-[25px] 2xl:h-[25px]"
                                 />
                               )}
                               {sub.title}

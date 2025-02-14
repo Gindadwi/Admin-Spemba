@@ -25,10 +25,10 @@ const Login = () => {
           toast.success("Login berhasil!");
           navigate("/dashboard");
         } else {
-          alert("Username atau password salah!");
+          toast.error("Username atau password salah!");
         }
       } else {
-        alert("Data admin tidak ditemukan!");
+        toast.error("Data admin tidak ditemukan!");
       }
     } catch (error) {
       console.error("Error saat login:", error);
@@ -88,12 +88,6 @@ const Login = () => {
             </button>
           </div>
         </form>
-
-        <div className="mt-4 text-center">
-          <a href="#" className="text-sm text-blue-500 hover:text-blue-700">
-            Forgot your password?
-          </a>
-        </div>
       </div>
     </div>
   );
