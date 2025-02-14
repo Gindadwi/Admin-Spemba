@@ -208,6 +208,17 @@ const DetailPendaftar = () => {
     }
   };
 
+  // Tambahkan fungsi handleFilter
+  const handleFilter = (filterType) => {
+    let sortedData = [...data];
+    if (filterType === "abjad") {
+      sortedData.sort((a, b) => a.nama.localeCompare(b.nama));
+    } else if (filterType === "status") {
+      sortedData.sort((a, b) => a.status.localeCompare(b.status));
+    }
+    setFilteredData(sortedData);
+  };
+
   return (
     <div className="relative w-full h-screen max-w-[1080px]">
       <div className="bg-white w-screen lg:w-screen items-center justify-start flex p-4 h-[63px] lg:sticky lg:top-0 lg:z-10 hidden lg:block">
@@ -229,6 +240,16 @@ const DetailPendaftar = () => {
               Download
             </h1>
           </button>
+
+          <select
+            className=" border-BiruPekat border-2 rounded-lg p-2 font-outfit"
+            onChange={(e) => handleFilter(e.target.value)}
+          >
+            <option value="">Pilih Filter</option>
+            <option value="abjad">Berdasarkan Abjad</option>
+            <option value="status">Berdasarkan Status</option>
+          </select>
+
           {dropdownOpen && (
             <div
               ref={dropdownRef}

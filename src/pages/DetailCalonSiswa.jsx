@@ -188,9 +188,12 @@ const DetailCalonSiswa = () => {
               Dokumen Pendukung:
             </h2>
 
-            <div className="grid grid-cols-3 gap-4 items-center justify-center px-10">
+            <div className="grid grid-cols-3 gap-4  px-10">
               {documentFields.map((field, index) => (
-                <div key={index} className="flex flex-col items-start gap-2">
+                <div
+                  key={index}
+                  className="flex flex-col items-start gap-2 border border-1 border-gray-400 shadow-md p-3 rounded-md"
+                >
                   <label className="font-medium font-poppins">
                     {field.label}:
                   </label>
@@ -207,7 +210,7 @@ const DetailCalonSiswa = () => {
                 </div>
               ))}
             </div>
-            <div className="w-full flex justify-end">
+            <div className="w-full flex justify-end mt-10">
               <button
                 type="submit"
                 className="bg-BiruPekat w-48 h-12 text-white font-poppins rounded-lg hover:scale-105"
