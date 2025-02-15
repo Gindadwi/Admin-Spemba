@@ -69,10 +69,22 @@ const DetailCalonSiswa = () => {
         );
 
         if (response.data) {
+          // Mengisi state formData dengan data yang diterima dari API,
+          // dan mengganti tanggalLahir dengan format baru
+          setFormData({});
+        }
+
+        if (response.data) {
+          // Mengonversi format tanggal lahir dari dd/MM/yyyy menjadi yyyy-MM-dd
+          const formattedDate = response.data.tanggalLahir
+            ? response.data.tanggalLahir.split("/").reverse().join("-") // Memisahkan string tanggal, membalik urutan, lalu menyatukan kembali
+            : "";
+          // Mengisi state formData dengan data yang diterima dari API,
+          // dan mengganti tanggalLahir dengan format baru
           setFormData({
             nama: response.data.nama || "",
             tempatLahir: response.data.tempatLahir || "",
-            tanggalLahir: response.data.tanggalLahir || "",
+            tanggalLahir: formattedDate || "",
             namaOrtu: response.data.namaOrtu || "",
             alamat: response.data.alamat || "",
             noHP: response.data.noHP || "",

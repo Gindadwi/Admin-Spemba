@@ -128,6 +128,16 @@ const DetailPendaftar = () => {
       });
     }
 
+    // menghitung status diterima dan ditolak
+    // toLowerCase() digunakan untuk menghindari kesalahan penulisan atau merubah menjadi huruf kecil semua
+    const diterimaCount = sortedData.filter((item) =>
+      item.status?.trim().toLowerCase().includes("terima")
+    ).length;
+
+    const ditolakCount = sortedData.filter((item) =>
+      item.status?.trim().toLowerCase().includes("tolak")
+    ).length;
+
     const headers = [
       { label: "Nama", key: "nama" },
       { label: "Tempat Lahir", key: "tempatLahir" },
@@ -142,6 +152,7 @@ const DetailPendaftar = () => {
       { label: "Nilai Matematika", key: "MTK" },
       { label: "Nilai Bahasa Indonesia", key: "BIndo" },
       { label: "Rata-Rata", key: "total" },
+      { label: "Status", key: "status" },
       { label: "Foto 3x4", key: "pasFotoUrl" },
       { label: "Kartu Keluarga (KK)", key: "kkUrl" },
       { label: "SKHUN", key: "skhunUrl" },
@@ -164,6 +175,7 @@ const DetailPendaftar = () => {
       BIndo: item.BIndo || "0",
       MTK: item.MTK || "0",
       total: item.total || "0",
+      status: item.status || "Tidak tersedia",
       pasFotoUrl: item.pasFotoUrl || "Tidak tersedia",
       kkUrl: item.kkUrl || "Tidak tersedia",
       skhunUrl: item.skhunUrl || "Tidak tersedia",
@@ -171,6 +183,12 @@ const DetailPendaftar = () => {
       kipUrl: item.kipUrl || "Tidak tersedia",
       sertifikatUrl: item.sertifikatUrl || "Tidak tersedia",
     }));
+
+    // Tambahkan keterangan jumlah diterima dan ditolak di bawah data
+    csvData.push(
+      { nama: "Jumlah Diterima", total: diterimaCount, status: "" }, // Hanya gunakan kolom untuk pemisah
+      { nama: "Jumlah Ditolak", total: ditolakCount, status: "" }
+    );
 
     //generate csv menggunakan papaparse
     const csv = Papa.unparse({
@@ -245,7 +263,7 @@ const DetailPendaftar = () => {
             className=" border-BiruPekat border-2 rounded-lg p-2 font-outfit"
             onChange={(e) => handleFilter(e.target.value)}
           >
-            <option value="">Pilih Filter</option>
+            <option value="">Normal</option>
             <option value="abjad">Berdasarkan Abjad</option>
             <option value="status">Berdasarkan Status</option>
           </select>
