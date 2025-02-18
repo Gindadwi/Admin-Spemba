@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { storage } from "../../firebase"; // Import your Firebase config
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const DetailCalonSiswa = () => {
   const { id } = useParams();
@@ -31,6 +33,15 @@ const DetailCalonSiswa = () => {
     sertifikatUrl: "",
   });
 
+  const [files, setFiles] = useState({
+    pasFoto: null,
+    aktaKelahiran: null,
+    kk: null,
+    kip: null,
+    skhun: null,
+    sertifikat: null,
+  });
+
   const [statusOptions] = useState([
     { title: "Di Terima" },
     { title: "Di Tolak" },
@@ -53,12 +64,20 @@ const DetailCalonSiswa = () => {
   ];
 
   const documentFields = [
-    { label: "Foto 3X4", name: "pasFotoUrl" },
-    { label: "Akta Kelahiran", name: "aktaKelahiranUrl" },
-    { label: "Kartu Keluarga", name: "kkUrl" },
-    { label: "Kartu Indonesia Pintar", name: "kipUrl" },
-    { label: "SKHUN", name: "skhunUrl" },
-    { label: "Sertifikat", name: "sertifikatUrl" },
+    {
+      label: "Pas Foto 3X4",
+      name: "pasFotoUrl",
+      field: "pasFoto",
+    },
+    {
+      label: "Akta Kelahiran",
+      name: "aktaKelahiranUrl",
+      field: "aktaKelahiran",
+    },
+    { label: "Kartu Keluarga", name: "kkUrl", field: "kk" },
+    { label: "Kartu Indonesia Pintar", name: "kipUrl", field: "kip" },
+    { label: "SKHUN", name: "skhunUrl", field: "skhun" },
+    { label: "Sertifikat", name: "sertifikatUrl", field: "sertifikat" },
   ];
 
   useEffect(() => {
@@ -123,15 +142,43 @@ const DetailCalonSiswa = () => {
     }));
   };
 
+  const handleFileChange = (e, field) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      setFiles((prevFiles) => ({ ...prevFiles, [field]: file }));
+    }
+  };
+
+  const uploadFile = async (file, fileName) => {
+    const fileRef = ref(storage, `files/${fileName}`);
+    const uploadTask = uploadBytesResumable(fileRef, file);
+
+    return new Promise((resolve, reject) => {
+      uploadTask.on("state_changed", null, reject, () => {
+        getDownloadURL(uploadTask.snapshot.ref).then(resolve).catch(reject);
+      });
+    });
+  };
+
   const handleUpdate = async (e) => {
     e.preventDefault();
 
     try {
+      const updatedData = { ...formData };
+      for (const [field, file] of Object.entries(files)) {
+        if (file) {
+          const url = await uploadFile(file, `${id}_${field}`);
+          updatedData[`${field}Url`] = url;
+        }
+      }
+
       await axios.patch(
         `https://smpmuhsumbang-9fa3a-default-rtdb.firebaseio.com/pendaftaran/${id}.json`,
-        formData
+        updatedData
       );
 
+      setFormData(updatedData); // Update state agar langsung terlihat di UI
       toast.success("Data berhasil diperbarui!");
       navigate("/detailPendaftar");
     } catch (error) {
@@ -219,6 +266,11 @@ const DetailCalonSiswa = () => {
                   ) : (
                     <p className="text-gray-500">Gambar tidak tersedia</p>
                   )}
+                  <input
+                    type="file"
+                    onChange={(e) => handleFileChange(e, field.field)}
+                    className="mt-2 text-sm text-gray-700 rounded-md border border-2 border-gray-300"
+                  />
                 </div>
               ))}
             </div>
