@@ -48,8 +48,11 @@ export const Editimg = () => {
           `https://smpmuhsumbang-9fa3a-default-rtdb.firebaseio.com/Prestasi/${id}.json`
         );
 
+        // Jika data ditemukan
         if (response.data) {
+          // Set data ke state
           setFormData({
+            // Set default value jika data kosong
             title: response.data.title || "",
             paragraf: response.data.paragraf || "",
             image: response.data.image || "",
@@ -92,6 +95,7 @@ export const Editimg = () => {
         }
       }
 
+      // Data yang akan diupdate
       const prestasi = {
         image: fileUrls.image || "",
         title: formData.title || "",

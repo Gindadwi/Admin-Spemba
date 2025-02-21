@@ -40,12 +40,17 @@ export const Faqs = () => {
       //   });
       // }
 
+      // Convert object data ke array untuk mempermudah manipulasi
       if (data) {
+        // Convert object data ke array untuk mempermudah manipulasi
         const dataArray = Object.keys(data).map((key) => ({
           id: key,
           ...data[key],
         }));
+
+        // Update state
         setData(dataArray);
+        // Update state
         setFilterData(dataArray);
       } else {
         setFilterData([]);
@@ -72,6 +77,7 @@ export const Faqs = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Cek jika form tidak diisi
     try {
       const FAQS = {
         question: formData.question || "",
@@ -97,6 +103,7 @@ export const Faqs = () => {
     if (!modalContent) return;
 
     try {
+      // Kirim data ke Database
       const url = `https://smpmuhsumbang-9fa3a-default-rtdb.firebaseio.com/FAQ/${modalContent.id}.json`;
       await axios.put(url, modalContent);
       toast.success("Data berhasil diperbarui!");
@@ -121,6 +128,7 @@ export const Faqs = () => {
       cancelButtonText: "Batal",
     });
 
+    // Jika pengguna mengonfirmasi
     if (result.isConfirmed) {
       try {
         const url = `https://smpmuhsumbang-9fa3a-default-rtdb.firebaseio.com/FAQ/${id}.json`;

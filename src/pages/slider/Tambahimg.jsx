@@ -6,6 +6,8 @@ import axios from "axios";
 
 export const Tambahimg = () => {
   const [image, setImage] = useState(null);
+
+  //
   const [formData, setFormData] = useState({
     title: "",
     paragraf: "",
@@ -43,6 +45,7 @@ export const Tambahimg = () => {
         return;
       }
 
+      // Inisialisasi Firebase Storage
       const storage = getStorage();
       const fileFields = ["image"];
       const fileUrls = {};

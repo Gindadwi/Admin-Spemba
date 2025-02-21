@@ -38,6 +38,7 @@ const DetailPendaftar = () => {
           ...data[key],
         }));
 
+        // Urutkan data berdasarkan status
         const sortData = dataArray.sort((a, b) => {
           if (a.status === "Pending" && b.status !== "Pending") return -1;
           if (a.status !== "Pending" && b.status === "Pending") return 1;
@@ -134,6 +135,7 @@ const DetailPendaftar = () => {
       item.status?.trim().toLowerCase().includes("terima")
     ).length;
 
+    // toLowerCase() digunakan untuk menghindari kesalahan penulisan atau merubah menjadi huruf kecil semua
     const ditolakCount = sortedData.filter((item) =>
       item.status?.trim().toLowerCase().includes("tolak")
     ).length;
@@ -201,6 +203,7 @@ const DetailPendaftar = () => {
     saveAs(blob, `data_pendaftaran_sorted_by_${sortBy}.csv`);
   };
 
+  // Membuat fungsi download
   const handleDelete = async (id) => {
     const result = await Swal.fire({
       title: "Apakah Anda yakin?",
@@ -213,6 +216,7 @@ const DetailPendaftar = () => {
       cancelButtonText: "Batal",
     });
 
+    // Jika pengguna mengonfirmasi penghapusan
     if (result.isConfirmed) {
       try {
         const url = `https://smpmuhsumbang-9fa3a-default-rtdb.firebaseio.com/pendaftaran/${id}.json`;
@@ -228,7 +232,9 @@ const DetailPendaftar = () => {
 
   // Tambahkan fungsi handleFilter
   const handleFilter = (filterType) => {
+    // Salin data asli agar tidak memodifikasi state
     let sortedData = [...data];
+    // Urutkan data berdasarkan filterType
     if (filterType === "abjad") {
       sortedData.sort((a, b) => a.nama.localeCompare(b.nama));
     } else if (filterType === "status") {
@@ -236,6 +242,32 @@ const DetailPendaftar = () => {
     }
     setFilteredData(sortedData);
   };
+
+  // const handleDeleteAll = async () => {
+  //   const result = await Swal.fire({
+  //     title: "Apakah Anda yakin?",
+  //     text: "Semua data akan dihapus secara permanen!",
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonColor: "#d33",
+  //     cancelButtonColor: "#3085d6",
+  //     confirmButtonText: "Ya, hapus semua!",
+  //     cancelButtonText: "Batal",
+  //   });
+
+  //   if (result.isConfirmed) {
+  //     try {
+  //       const url =
+  //         "https://smpmuhsumbang-9fa3a-default-rtdb.firebaseio.com/pendaftaran.json";
+  //       await axios.delete(url); // Menghapus seluruh data
+  //       Swal.fire("Berhasil!", "Semua data telah dihapus.", "success");
+  //       fetchData(); // Refresh data setelah penghapusan
+  //     } catch (error) {
+  //       console.error("Error deleting all data:", error);
+  //       Swal.fire("Gagal!", "Data gagal dihapus.", "error");
+  //     }
+  //   }
+  // };
 
   return (
     <div className="relative w-full h-screen max-w-[1080px]">
@@ -254,7 +286,7 @@ const DetailPendaftar = () => {
             onClick={handelDownload}
             className="bg-BiruPekat flex justify-center items-center p-3 rounded-lg"
           >
-            <h1 className="text-white text-[18px] font-mono font-semibold">
+            <h1 className="text-white text-[18px] font-outfit font-semibold">
               Download
             </h1>
           </button>
@@ -291,6 +323,13 @@ const DetailPendaftar = () => {
               </div>
             </div>
           )}
+
+          {/* <button
+            onClick={handleDeleteAll}
+            className="bg-red-700 text-white text-[18px] font-outfit font-semiboldp-3 w-full rounded-lg "
+          >
+            Reset
+          </button> */}
         </div>
 
         <div className="relative max-w-[1020px] 2xl:w-[1440px] my-2 2xl:my-5 overflow-x-auto overflow-y-auto max-h-[450px] ">

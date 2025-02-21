@@ -133,33 +133,33 @@ const DetailCalonSiswa = () => {
     fetchData();
   }, [id]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
 
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+  //   setFormData((prevData) => ({
+  //     ...prevData,
+  //     [name]: value,
+  //   }));
+  // };
 
-  const handleFileChange = (e, field) => {
-    const file = e.target.files[0];
+  // const handleFileChange = (e, field) => {
+  //   const file = e.target.files[0];
 
-    if (file) {
-      setFiles((prevFiles) => ({ ...prevFiles, [field]: file }));
-    }
-  };
+  //   if (file) {
+  //     setFiles((prevFiles) => ({ ...prevFiles, [field]: file }));
+  //   }
+  // };
 
-  const uploadFile = async (file, fileName) => {
-    const fileRef = ref(storage, `files/${fileName}`);
-    const uploadTask = uploadBytesResumable(fileRef, file);
+  // const uploadFile = async (file, fileName) => {
+  //   const fileRef = ref(storage, `files/${fileName}`);
+  //   const uploadTask = uploadBytesResumable(fileRef, file);
 
-    return new Promise((resolve, reject) => {
-      uploadTask.on("state_changed", null, reject, () => {
-        getDownloadURL(uploadTask.snapshot.ref).then(resolve).catch(reject);
-      });
-    });
-  };
+  //   return new Promise((resolve, reject) => {
+  //     uploadTask.on("state_changed", null, reject, () => {
+  //       getDownloadURL(uploadTask.snapshot.ref).then(resolve).catch(reject);
+  //     });
+  //   });
+  // };
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -220,7 +220,6 @@ const DetailCalonSiswa = () => {
                   type={field.type}
                   name={field.name}
                   value={formData[field.name] || ""}
-                  onChange={handleChange}
                   className="w-full h-10 px-4 border border-gray-500 rounded-md"
                 />
               </div>
@@ -228,19 +227,28 @@ const DetailCalonSiswa = () => {
 
             <div className="grid grid-cols-[200px_1fr] items-center gap-4">
               <label className="font-medium text-right">Status:</label>
-              <select
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-                className="w-full h-10 px-3 border rounded-md"
-              >
-                <option value="">Pilih Status</option>
+              <div className="flex gap-2">
                 {statusOptions.map((option, index) => (
-                  <option key={index} value={option.title}>
+                  <button
+                    key={index}
+                    type="button"
+                    onClick={() =>
+                      setFormData((prev) => ({ ...prev, status: option.title }))
+                    }
+                    className={`px-4 py-2 rounded-md text-white ${
+                      formData.status === option.title
+                        ? option.title === "Di Terima"
+                          ? "bg-green-600"
+                          : option.title === "Di Tolak"
+                          ? "bg-red-600"
+                          : "bg-orange-600"
+                        : "bg-gray-400"
+                    }`}
+                  >
                     {option.title}
-                  </option>
+                  </button>
                 ))}
-              </select>
+              </div>
             </div>
 
             <h2 className="font-semibold font-outfit text-xl text-center my-6">
@@ -251,7 +259,7 @@ const DetailCalonSiswa = () => {
               {documentFields.map((field, index) => (
                 <div
                   key={index}
-                  className="flex flex-col items-start gap-2 border border-1 border-gray-400 shadow-md p-3 rounded-md"
+                  className="flex flex-col items-start  gap-2 border border-1 border-gray-400 shadow-md p-3 rounded-md"
                 >
                   <label className="font-medium font-poppins">
                     {field.label}:
@@ -266,11 +274,6 @@ const DetailCalonSiswa = () => {
                   ) : (
                     <p className="text-gray-500">Gambar tidak tersedia</p>
                   )}
-                  <input
-                    type="file"
-                    onChange={(e) => handleFileChange(e, field.field)}
-                    className="mt-2 text-sm text-gray-700 rounded-md border border-2 border-gray-300"
-                  />
                 </div>
               ))}
             </div>

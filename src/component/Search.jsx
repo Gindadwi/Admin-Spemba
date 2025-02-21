@@ -16,7 +16,7 @@ export default function Search({ onSearch }) {
             type="text"
             name="search"
             placeholder="Input pencarian"
-            className="text-black font-outfit w-[555px] py-3 rounded-lg px-2 border border-3 border-gray-400 shadow-sm"
+            className="text-black font-outfit w-[455px] py-3 rounded-lg px-2 border border-3 border-gray-400 shadow-sm"
             value={searchTerm} // Menghubungkan input dengan searchTerm
             onChange={(e) => setSearchTerm(e.target.value)} // Update searchTerm saat user mengetik
           />

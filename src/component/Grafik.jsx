@@ -21,34 +21,43 @@ ChartJS.register(
 );
 
 const Grafik = () => {
-  // State untuk menyimpan data pendaftar dan bulan yang dipilih
   const [dataPendaftaran, setDataPendaftaran] = useState([]);
-  const [selectedMonth, setSelectedMonth] = useState("Januari"); // Default bulan
+  const [selectedMonth, setSelectedMonth] = useState("Januari");
 
   useEffect(() => {
-    // Fungsi untuk mengambil data dari API
     const fetchData = async () => {
       try {
         const response = await axios.get(
           "https://smpmuhsumbang-9fa3a-default-rtdb.firebaseio.com/pendaftaran.json"
         );
         const fetchedData = Object.values(response.data);
+
+        console.log("Data dari Firebase:", fetchedData); // Debugging
         setDataPendaftaran(fetchedData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
-    fetchData(); // Memanggil fetchData saat komponen dimuat
+    fetchData();
   }, []);
 
-  // Fungsi untuk memparsing tanggal dengan format DD/MM/YYYY
   const parseDate = (dateString) => {
-    const [day, month, year] = dateString.split("/"); // Pecah string menjadi [DD, MM, YYYY]
-    return new Date(`${year}-${month}-${day}`); // Susun ulang menjadi format YYYY-MM-DD
+    if (!dateString || typeof dateString !== "string") {
+      console.warn("Tanggal tidak valid:", dateString);
+      return new Date(NaN); // Mengembalikan invalid date
+    }
+
+    const parts = dateString.split("/");
+    if (parts.length !== 3) {
+      console.warn("Format tanggal tidak valid:", dateString);
+      return new Date(NaN);
+    }
+
+    const [day, month, year] = parts;
+    return new Date(`${year}-${month}-${day}`);
   };
 
-  // Fungsi untuk memfilter data berdasarkan bulan yang dipilih
   const filterDataByMonth = (month) => {
     const monthMap = {
       Januari: 0,
@@ -67,40 +76,47 @@ const Grafik = () => {
 
     const selectedMonthIndex = monthMap[month];
 
-    // Filter data untuk bulan yang dipilih
     const filteredData = dataPendaftaran.filter((item) => {
-      const registrationDate = parseDate(item.tanggalDaftar); // Gunakan parseDate di sini
-      return registrationDate.getMonth() === selectedMonthIndex;
+      if (!item.tanggalDaftar) {
+        console.warn("Data tanpa tanggal ditemukan:", item);
+        return false;
+      }
+
+      const registrationDate = parseDate(item.tanggalDaftar);
+      return (
+        !isNaN(registrationDate) &&
+        registrationDate.getMonth() === selectedMonthIndex
+      );
     });
 
-    // Mengelompokkan data berdasarkan tanggal (1-30)
-    const countsPerDay = Array(30).fill(0); // Inisialisasi array untuk 30 hari
+    const countsPerDay = Array(30).fill(0);
 
     filteredData.forEach((item) => {
-      const registrationDate = parseDate(item.tanggalDaftar); // Gunakan parseDate di sini
-      const day = registrationDate.getDate(); // Mendapatkan tanggal (1-30)
-      countsPerDay[day - 1] += 1; // Menambahkan jumlah pendaftaran pada tanggal tertentu
+      if (!item.tanggalDaftar) return;
+
+      const registrationDate = parseDate(item.tanggalDaftar);
+      if (!isNaN(registrationDate)) {
+        const day = registrationDate.getDate();
+        countsPerDay[day - 1] += 1;
+      }
     });
 
     return countsPerDay;
   };
 
-  // Mendapatkan pendaftaran per hari untuk bulan yang dipilih
   const pendaftaranPerHari = filterDataByMonth(selectedMonth);
 
-  // Data untuk grafik
   const data = {
-    labels: Array.from({ length: 30 }, (_, i) => `Hari ${i + 1}`), // Label (Hari 1 - Hari 30)
+    labels: Array.from({ length: 30 }, (_, i) => `Hari ${i + 1}`),
     datasets: [
       {
         label: "Jumlah Pendaftaran",
-        data: pendaftaranPerHari, // Data berdasarkan tanggal
+        data: pendaftaranPerHari,
         backgroundColor: "#0D3B66",
       },
     ],
   };
 
-  // Opsi untuk grafik
   const options = {
     responsive: true,
     maintainAspectRatio: false,
